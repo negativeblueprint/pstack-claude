@@ -1,0 +1,13 @@
+{
+	"name": "pstack-claude",
+	"owner": {
+		"name": "pstack-claude"
+	},
+	"plugins": [
+		{
+			"name": "pstack",
+			"source": "./",
+			"description": "Rigorous agent workflows for Claude Code: poteto-mode playbooks, engineering principles, and multi-model review panels."
+		}
+	]
+}

@@ -1,0 +1,24 @@
+{
+	"$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+	"name": "pstack",
+	"displayName": "pstack for Claude Code",
+	"version": "0.1.0",
+	"description": "A Claude Code port of poteto's pstack. If you want to go fast, go deep first. Rigorous agent workflows you can parallelize with confidence: playbooks, engineering principles, multi-model review panels, and verification skills.",
+	"author": {
+		"name": "Ported for Claude Code"
+	},
+	"homepage": "https://github.com/cursor/plugins/tree/main/pstack",
+	"license": "MIT",
+	"keywords": [
+		"pstack",
+		"poteto-mode",
+		"workflow",
+		"principles",
+		"subagents",
+		"review",
+		"planning",
+		"unslop"
+	],
+	"skills": "./skills/",
+	"agents": "./agents/"
+}
