@@ -3,7 +3,7 @@
 > **This is a port, not original work.** pstack was designed and written by
 > [poteto](https://github.com/poteto) and published in
 > [cursor/plugins](https://github.com/cursor/plugins/tree/main/pstack).
-> Every skill, playbook, and principle here is his. This repository only
+> Every skill, playbook, and principle here is hers. This repository only
 > translates them to run on Claude Code. Not affiliated with poteto or Cursor.
 
 If you want to go fast, go deep first. That is pstack's whole argument. It is a set of skills for writing less code of higher quality, and for parallelizing agents you can actually trust. The goal is not to maximize lines of code. It is the opposite.
@@ -133,7 +133,7 @@ The index lives inline in [`skills/poteto-mode/SKILL.md`](./skills/poteto-mode/S
 
 ## Credits
 
-pstack is by [poteto](https://github.com/poteto). The skills, the playbooks, the principles, the twenty-two-playbook router, the whole idea of encoding engineering judgment as leaf skills an agent navigates into, all of it is his design. Read the [original](https://github.com/cursor/plugins/tree/main/pstack) first if you want the source of the ideas.
+pstack is by [poteto](https://github.com/poteto). The skills, the playbooks, the principles, the twenty-two-playbook router, the whole idea of encoding engineering judgment as leaf skills an agent navigates into, all of it is her design. Read the [original](https://github.com/cursor/plugins/tree/main/pstack) first if you want the source of the ideas.
 
 This port exists because the ideas are good and the format is portable. Anthropic's `SKILL.md` spec is what both editors read, so most of pstack moved across unchanged. That is a nice property of an open format, and it is worth saying out loud that the port was easy because someone else did the hard part.
 
