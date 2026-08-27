@@ -1,20 +1,50 @@
 # pstack for Claude Code
 
-A port of [pstack](https://github.com/cursor/plugins/tree/main/pstack) by [poteto](https://x.com/poteto) from Cursor to Claude Code.
+> **This is a port, not original work.** pstack was designed and written by
+> [poteto](https://github.com/poteto) and published in
+> [cursor/plugins](https://github.com/cursor/plugins/tree/main/pstack).
+> Every skill, playbook, and principle here is his. This repository only
+> translates them to run on Claude Code. Not affiliated with poteto or Cursor.
 
-pstack's premise: if you want to go fast, go deep first. It is a set of skills for writing less code of higher quality, and for parallelizing agents you can actually trust. The goal is not to maximize lines of code. It is the opposite.
+If you want to go fast, go deep first. That is pstack's whole argument. It is a set of skills for writing less code of higher quality, and for parallelizing agents you can actually trust. The goal is not to maximize lines of code. It is the opposite.
 
-This repository is not affiliated with the upstream project. All design credit is poteto's. What is here is a translation: the skills, playbooks, and principles rewritten against Claude Code's tools, subagent model, and configuration surfaces. See [PORTING.md](./PORTING.md) for what changed, what improved, and what does not survive the move.
+What changed in the port is everything that names a tool, a model, or a config path. The `Task` tool became the `Agent` tool. Cursor's model roster became Claude's. Cursor's hosted Automations became GitHub Actions. Read [PORTING.md](./PORTING.md) for the full translation table, what got better, and the one thing that genuinely does not survive the move.
+
+If you find a bug here, check whether it exists upstream before reporting it. A porting mistake is mine. A design question is poteto's.
 
 ## Install
 
-Clone this repo, then from its parent directory:
+Clone, then run the installer for your shell.
+
+**macOS, Linux, Git Bash**
 
 ```bash
-claude
+git clone https://github.com/negativeblueprint/pstack-claude.git && cd pstack-claude && ./install.sh
 ```
 
-Inside Claude Code:
+**Windows PowerShell**
+
+```powershell
+git clone https://github.com/negativeblueprint/pstack-claude.git; cd pstack-claude; .\install.ps1
+```
+
+This copies 44 skills into `~/.claude/skills/` and 2 agents into `~/.claude/agents/`. **Restart Claude Code** afterward, since skills are discovered at session start.
+
+The installer is safe to re-run. It compares content, so a second run reports everything already current and changes nothing. If you already have a skill with one of our names (`how`, `why`, `teach`, `swarm` and `bro` are the plausible collisions), it refuses rather than overwriting, and tells you which ones. Pass `--force` (bash) or `-Force` (PowerShell) once you've backed those up.
+
+To install somewhere else, set `CLAUDE_HOME`.
+
+To check the installer on your own machine before trusting it with your config, `./verify-install.sh` runs the whole thing against a temp directory and never touches `~/.claude`.
+
+**Uninstall** by deleting what it copied.
+
+```bash
+cd pstack-claude && ls skills | xargs -I{} rm -rf ~/.claude/skills/{} && rm -f ~/.claude/agents/poteto-agent.md ~/.claude/agents/comment-sicko.md
+```
+
+### Installing as a plugin instead
+
+The repo is also a self-contained plugin marketplace, which gets you `/pstack:` namespacing and one-command removal. It needs Claude Code's interactive plugin panel, so it works in the terminal but not in every client.
 
 ```
 /plugin marketplace add ./pstack-claude
@@ -24,9 +54,9 @@ Inside Claude Code:
 /plugin install pstack@pstack-claude
 ```
 
-If the install summary says `Run /reload-plugins to activate.`, run that.
+Pick a scope when the details view opens. If the summary says `Run /reload-plugins to activate.`, run that.
 
-Plugin skills are namespaced. `/poteto-mode` works when the name is unambiguous; `/pstack:poteto-mode` always works.
+Use one method or the other, not both. Two copies of the same skill name is exactly the collision the installer is built to avoid.
 
 ## Get started
 
@@ -101,6 +131,10 @@ The index lives inline in [`skills/poteto-mode/SKILL.md`](./skills/poteto-mode/S
 
 [`automations/benny/`](./automations/benny/) is a separate pack, not part of the installed plugin. It triages Slack issue reports and reproduces confirmed bugs. Upstream it ran on Cursor's hosted Automations product; here it runs as GitHub Actions workflows invoking Claude Code headlessly. Read [`automations/benny/FOR_AGENTS.md`](./automations/benny/FOR_AGENTS.md) to install it into a target repository.
 
-## Provenance
+## Credits
 
-Upstream is MIT licensed and that license is preserved in [LICENSE](./LICENSE). The original README is kept verbatim at [README.upstream.md](./README.upstream.md) so you can see what the Cursor version says. Fork it, improve it, make it yours.
+pstack is by [poteto](https://github.com/poteto). The skills, the playbooks, the principles, the twenty-two-playbook router, the whole idea of encoding engineering judgment as leaf skills an agent navigates into, all of it is his design. Read the [original](https://github.com/cursor/plugins/tree/main/pstack) first if you want the source of the ideas.
+
+This port exists because the ideas are good and the format is portable. Anthropic's `SKILL.md` spec is what both editors read, so most of pstack moved across unchanged. That is a nice property of an open format, and it is worth saying out loud that the port was easy because someone else did the hard part.
+
+Upstream is MIT licensed and that license is preserved in [LICENSE](./LICENSE). The original README is kept verbatim at [README.upstream.md](./README.upstream.md) so you can compare. Fork it, improve it, make it yours.
