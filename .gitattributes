@@ -1,0 +1,6 @@
+# Shell scripts must keep LF. With core.autocrlf=true a Windows clone would
+# get CRLF and bash fails on the carriage returns.
+*.sh text eol=lf
+skills/poteto-mode/scripts/watch-pr/watch-pr text eol=lf
+
+*.jpg binary
