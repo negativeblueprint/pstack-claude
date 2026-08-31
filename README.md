@@ -42,6 +42,15 @@ To check the installer on your own machine before trusting it with your config, 
 cd pstack-claude && ls skills | xargs -I{} rm -rf ~/.claude/skills/{} && rm -f ~/.claude/agents/poteto-agent.md ~/.claude/agents/comment-sicko.md
 ```
 
+### Claude Code on the web
+
+Web sessions start from a fresh container, so nothing is in `~/.claude` yet. A
+`SessionStart` hook in [`.claude/hooks/session-start.sh`](./.claude/hooks/session-start.sh)
+runs the installer for you when a session opens on this repo, so the skills and
+agents are there without a manual step. It also installs `shellcheck`, which is
+what lints the shell in here. It does nothing outside a remote session, so your
+local clone is still yours to install by hand.
+
 ### Installing as a plugin instead
 
 The repo is also a self-contained plugin marketplace, which gets you `/pstack:` namespacing and one-command removal. It needs Claude Code's interactive plugin panel, so it works in the terminal but not in every client.
