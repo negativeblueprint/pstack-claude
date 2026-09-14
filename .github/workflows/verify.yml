@@ -1,0 +1,29 @@
+name: verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Installer, manifest, and documented counts
+        run: ./verify-install.sh
+
+      - name: Prose rules the skills impose on themselves
+        run: |
+          count=$(grep -rn "$(printf '—')" skills --include='*.md' | wc -l)
+          echo "em dashes in skills/: $count"
+          test "$count" -eq 0
+
+      - uses: oven-sh/setup-bun@v2
+
+      - name: TypeScript suites
+        working-directory: skills/poteto-mode/scripts
+        run: |
+          bun install --frozen-lockfile
+          bun test

@@ -1,0 +1,51 @@
+name: Bug report
+description: Something in this port behaves differently from the upstream skill, or breaks on Claude Code.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This repository is a port of [poteto's pstack](https://github.com/cursor/plugins/tree/main/pstack). A porting mistake is ours. A design question is hers.
+
+  - type: dropdown
+    id: upstream
+    attributes:
+      label: Does this also happen upstream?
+      options:
+        - No, upstream behaves correctly and the port does not
+        - Yes, upstream does the same thing
+        - I have not checked
+    validations:
+      required: true
+
+  - type: input
+    id: skill
+    attributes:
+      label: Which skill
+      placeholder: poteto-mode, swarm, setup-pstack
+    validations:
+      required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you asked for, what the agent did, and what you expected instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Claude Code version, operating system, and whether the skills were installed with install.sh or as a plugin.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before filing
+      options:
+        - label: I ran `./verify-install.sh` and pasted the failure above if it failed
+        - label: I restarted Claude Code after installing, since skills are discovered at session start

@@ -1,5 +1,7 @@
 # pstack for Claude Code
 
+[![verify](https://github.com/negativeblueprint/pstack-claude/actions/workflows/verify.yml/badge.svg)](https://github.com/negativeblueprint/pstack-claude/actions/workflows/verify.yml)
+
 > **This is a port, not original work.** pstack was designed and written by
 > [poteto](https://github.com/poteto) and published in
 > [cursor/plugins](https://github.com/cursor/plugins/tree/main/pstack).
@@ -28,7 +30,7 @@ git clone https://github.com/negativeblueprint/pstack-claude.git && cd pstack-cl
 git clone https://github.com/negativeblueprint/pstack-claude.git; cd pstack-claude; .\install.ps1
 ```
 
-This copies 44 skills into `~/.claude/skills/` and 2 agents into `~/.claude/agents/`. **Restart Claude Code** afterward, since skills are discovered at session start.
+This copies 47 skills into `~/.claude/skills/` and 2 agents into `~/.claude/agents/`. **Restart Claude Code** afterward, since skills are discovered at session start.
 
 The installer is safe to re-run. It compares content, so a second run reports everything already current and changes nothing. If you already have a skill with one of our names (`how`, `why`, `teach`, `swarm` and `bro` are the plausible collisions), it refuses rather than overwriting, and tells you which ones. Pass `--force` (bash) or `-Force` (PowerShell) once you've backed those up.
 
@@ -41,6 +43,15 @@ To check the installer on your own machine before trusting it with your config, 
 ```bash
 cd pstack-claude && ls skills | xargs -I{} rm -rf ~/.claude/skills/{} && rm -f ~/.claude/agents/poteto-agent.md ~/.claude/agents/comment-sicko.md
 ```
+
+### Claude Code on the web
+
+Web sessions start from a fresh container, so nothing is in `~/.claude` yet. A
+`SessionStart` hook in [`.claude/hooks/session-start.sh`](./.claude/hooks/session-start.sh)
+runs the installer for you when a session opens on this repo, so the skills and
+agents are there without a manual step. It also installs `shellcheck`, which is
+what lints the shell in here. It does nothing outside a remote session, so your
+local clone is still yours to install by hand.
 
 ### Installing as a plugin instead
 
@@ -86,7 +97,7 @@ Twenty-two playbooks ship with it, covering investigation, bug fixes, perf, hill
 
 ## Skills
 
-44 skills. `/poteto-mode` runs most of them for you. Reach for one directly when you want just that.
+47 skills. `/poteto-mode` runs most of them for you. Reach for one directly when you want just that.
 
 | skill | use it when |
 |---|---|
@@ -110,10 +121,11 @@ Twenty-two playbooks ship with it, covering investigation, bug fixes, perf, hill
 | `/create-verification-skill` | your project has no way for an agent to drive the real app and prove a change works. |
 | `/maintain-verification-skill` | that skill has drifted from the app. |
 | `/automate-me` | you want your own working style mined out of your history into a personal mode skill. |
-| `/setup-pstack` | you want to change which model fills which role. |
+| `/setup-pstack` | you want to change which model fills which role, or cap the budget they run under. |
+| `/p-update` | you want to pull upstream pstack changes into this fork and reinstall. |
 | `/bro` | the last message was jargon. say it like a human. |
 
-Plus `/typescript-best-practices`, and twenty `principle-*` skills that the mode's principles index navigates into.
+Plus `/typescript-best-practices`, and twenty-two `principle-*` skills that the mode's principles index navigates into.
 
 ## Principles
 
@@ -130,6 +142,10 @@ The index lives inline in [`skills/poteto-mode/SKILL.md`](./skills/poteto-mode/S
 ## Automations
 
 [`automations/benny/`](./automations/benny/) is a separate pack, not part of the installed plugin. It triages Slack issue reports and reproduces confirmed bugs. Upstream it ran on Cursor's hosted Automations product; here it runs as GitHub Actions workflows invoking Claude Code headlessly. Read [`automations/benny/FOR_AGENTS.md`](./automations/benny/FOR_AGENTS.md) to install it into a target repository.
+
+## Contributing
+
+[CONTRIBUTING.md](./CONTRIBUTING.md) has the rules. The short version is that design questions go upstream, porting mistakes go here, `./verify-install.sh` has to pass, and `/p-update` owns syncing with upstream rather than anyone doing it by hand.
 
 ## Credits
 

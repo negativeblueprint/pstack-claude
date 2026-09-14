@@ -48,5 +48,34 @@ echo "forced recovery"
 check "user content replaced" "$(grep -c "user's own skill" "$sandbox/skills/how/SKILL.md" || true)" "0"
 check "still complete" "$(find "$sandbox/skills" -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')" "$expected_skills"
 
+echo "skill manifest"
+manifest_bad=0
+for dir in "$repo"/skills/*/; do
+	slug="$(basename "$dir")"
+	declared="$(sed -n 's/^name: *//p' "$dir/SKILL.md" | head -1 | tr -d '\042\047')"
+	[ "$declared" = "$slug" ] || { echo "  FAIL  $slug declares name '$declared'"; manifest_bad=1; }
+	grep -q '^description:' "$dir/SKILL.md" || { echo "  FAIL  $slug has no description"; manifest_bad=1; }
+	case "$slug" in
+		principle-*)
+			grep -q "(\*\*$slug\*\*)" "$repo/skills/poteto-mode/SKILL.md" ||
+				{ echo "  FAIL  $slug is not in poteto-mode's principles index"; manifest_bad=1; } ;;
+	esac
+done
+if [ "$manifest_bad" -eq 0 ]; then
+	echo "  pass  every skill names itself and every principle leaf is indexed"
+else
+	fail=1
+fi
+
+echo "documented counts"
+for doc in README.md PORTING.md; do
+	for claimed in $(grep -oE '[0-9]+ skills' "$repo/$doc" | grep -oE '^[0-9]+' | sort -u); do
+		check "$doc skill count" "$claimed" "$expected_skills"
+	done
+	for claimed in $(grep -oE '[0-9]+ agents' "$repo/$doc" | grep -oE '^[0-9]+' | sort -u); do
+		check "$doc agent count" "$claimed" "$expected_agents"
+	done
+done
+
 echo
 [ "$fail" -eq 0 ] && echo "all checks passed" || { echo "checks failed"; exit 1; }
