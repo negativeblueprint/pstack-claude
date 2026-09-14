@@ -1,6 +1,6 @@
 ---
 name: setup-pstack
-description: Configure which models pstack uses per role. Detects the model values this session can pass to a subagent and writes a config file the skills read. Use for /setup-pstack, "configure pstack models", or changing pstack's model choices.
+description: Configure which models pstack uses per role and under what budget. Detects the model values this session can pass to a subagent and writes a config file the skills read. Use for /setup-pstack, "configure pstack models", "pstack budget", or changing pstack's model choices.
 disable-model-invocation: true
 ---
 
@@ -22,15 +22,26 @@ Never write a value you have not confirmed this session accepts. `inherit` is al
 
 The default role-to-model mapping is the shape shown in step 5. If `~/.claude/pstack/models.md` already exists, read it and treat its values as the current choices. Otherwise start from those defaults.
 
-### 3. Map and confirm
+### 3. Budget, map, and confirm
 
-Show every role with its current model, marking any value not in the detected set as needing a choice. Ask whether to accept as-is or change specific roles, offering the detected models plus `inherit` (meaning: this role runs on the parent chat model, so omit `model` on the `Agent` call). Prefer `AskUserQuestion` over free text.
+**(a) Ask for a budget.** Prefer `AskUserQuestion` over free text. Offer these four options with these exact labels, and name the current budget when the config records one.
+
+- `unlimited, no ceiling`
+- `large, opus ceiling`
+- `medium, sonnet ceiling`
+- `small, haiku ceiling`
+
+**(b) Apply it.** Upstream tunes a reasoning-effort token inside the model slug. The `Agent` tool takes no effort argument, so here the budget is a ceiling on the ladder `fable` > `opus` > `sonnet` > `haiku`. Build the working table from the defaults in step 5, keep any role the user changed on a re-run, then clamp every role to the ceiling. `unlimited` changes nothing. `inherit` never changes, because the parent's model is not yours to clamp. A panel list is clamped entry by entry, and duplicates that result stay, since the list length sets the fan-out.
+
+Say once, at `medium` and below, that clamping collapses the panels toward one model and the lens assignment is then carrying all of the diversity. Do not widen a panel to compensate.
+
+**(c) Map and confirm.** Show every role with its current model, marking any value not in the detected set as needing a choice. Ask whether to accept as-is or change specific roles, offering the detected models plus `inherit` (meaning: this role runs on the parent chat model, so omit `model` on the `Agent` call). Prefer `AskUserQuestion` over free text.
 
 For panel roles (how critics, arena runners, architect runners, interrogate reviewers) the value is a list. One subagent runs per entry, `inherit` entries included, so the list length sets the fan-out. `arena cross-judge pool` is also a list, and Arena selects one value from it that differs from the parent's model when possible. `swarm workers` is the default model for every worker unless a race or comparison assigns another model per arm.
 
 ### 4. Validate
 
-Every value written must be one the `Agent` tool accepts in this session; `inherit` always passes. If a chosen value is not available, stop and ask again. A config pointing at a model the user cannot use breaks every delegation that reads it.
+Every value written must be one the `Agent` tool accepts in this session, and `inherit` always passes. Check the clamp too. No role may sit above the recorded budget's ceiling. If a chosen value is not available, stop and ask again. A config pointing at a model the user cannot use breaks every delegation that reads it.
 
 ### 5. Write the config
 
@@ -40,6 +51,7 @@ Write `~/.claude/pstack/models.md` with one line per role. Overwrite the whole f
 # pstack model configuration. One line per role. Delete a line to fall back to the skill default.
 # `inherit` as a value: the role runs on the parent chat model (omit the `Agent` call's `model`).
 # `inherit` entries in a panel list still count toward its fan-out.
+# budget: unlimited (no ceiling)
 feature, refactoring: sonnet
 bug-fix: opus
 perf-issue: opus

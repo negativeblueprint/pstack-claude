@@ -4,7 +4,7 @@ What changed, why, and what does not survive the move. Read this before trusting
 
 ## Why the port is mostly mechanical
 
-Cursor adopted Anthropic's `SKILL.md` format. Directory layout, frontmatter, and progressive disclosure through `references/` and `playbooks/` are the same in both. The 44 skills, 22 playbooks, and 20 principles are content, and content ported verbatim.
+Cursor adopted Anthropic's `SKILL.md` format. Directory layout, frontmatter, and progressive disclosure through `references/` and `playbooks/` are the same in both. The 47 skills, 22 playbooks, and 22 principles are content, and content ported verbatim.
 
 What did not port verbatim is everything that names a tool, a model, or a configuration path.
 
@@ -89,6 +89,15 @@ Claude Code has no hosted trigger product. Benny's two runners become two GitHub
 Sections 1 through 6 of `setup-benny` are unchanged. Only section 7, the runner wiring, was rewritten.
 
 Two hazards worth naming, because a hosted product handled them and a workflow does not. Secrets belong in GitHub Actions secrets, never in workflow files or prompts. And Slack reports, issue bodies, and PR comments are data written by other people: a runner with repository write access that treats them as instructions is a prompt-injection hole. Both prompts say so explicitly.
+
+
+## Deliberately not ported
+
+`make-bot-ui` is upstream and is not here. It builds a page that wakes a Grok Bot through a Cursor webhook, and every mechanism it names is Cursor's. The `update_state` routine target, the `SendToUser` secret-request card, the `api2.cursor.sh/automations/webhook` endpoint, and the `[routine]` wake. Claude Code has no equivalent for any of them, so a translation would be an invention wearing a port's name.
+
+`/setup-pstack`'s budget question did port, but not as written. Upstream sets a reasoning-effort token inside the model slug. The `Agent` tool takes no effort argument, so the same four labels became a ceiling on the ladder `fable` > `opus` > `sonnet` > `haiku`.
+
+`SYNC.md` records these and the rest of the reconciliation, and `/p-update` maintains it.
 
 ## Not verified
 

@@ -28,7 +28,7 @@ git clone https://github.com/negativeblueprint/pstack-claude.git && cd pstack-cl
 git clone https://github.com/negativeblueprint/pstack-claude.git; cd pstack-claude; .\install.ps1
 ```
 
-This copies 44 skills into `~/.claude/skills/` and 2 agents into `~/.claude/agents/`. **Restart Claude Code** afterward, since skills are discovered at session start.
+This copies 47 skills into `~/.claude/skills/` and 2 agents into `~/.claude/agents/`. **Restart Claude Code** afterward, since skills are discovered at session start.
 
 The installer is safe to re-run. It compares content, so a second run reports everything already current and changes nothing. If you already have a skill with one of our names (`how`, `why`, `teach`, `swarm` and `bro` are the plausible collisions), it refuses rather than overwriting, and tells you which ones. Pass `--force` (bash) or `-Force` (PowerShell) once you've backed those up.
 
@@ -95,7 +95,7 @@ Twenty-two playbooks ship with it, covering investigation, bug fixes, perf, hill
 
 ## Skills
 
-44 skills. `/poteto-mode` runs most of them for you. Reach for one directly when you want just that.
+47 skills. `/poteto-mode` runs most of them for you. Reach for one directly when you want just that.
 
 | skill | use it when |
 |---|---|
@@ -119,10 +119,11 @@ Twenty-two playbooks ship with it, covering investigation, bug fixes, perf, hill
 | `/create-verification-skill` | your project has no way for an agent to drive the real app and prove a change works. |
 | `/maintain-verification-skill` | that skill has drifted from the app. |
 | `/automate-me` | you want your own working style mined out of your history into a personal mode skill. |
-| `/setup-pstack` | you want to change which model fills which role. |
+| `/setup-pstack` | you want to change which model fills which role, or cap the budget they run under. |
+| `/p-update` | you want to pull upstream pstack changes into this fork and reinstall. |
 | `/bro` | the last message was jargon. say it like a human. |
 
-Plus `/typescript-best-practices`, and twenty `principle-*` skills that the mode's principles index navigates into.
+Plus `/typescript-best-practices`, and twenty-two `principle-*` skills that the mode's principles index navigates into.
 
 ## Principles
 
