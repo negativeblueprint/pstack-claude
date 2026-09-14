@@ -153,4 +153,4 @@ pstack is by [poteto](https://github.com/poteto). The skills, the playbooks, the
 
 This port exists because the ideas are good and the format is portable. Anthropic's `SKILL.md` spec is what both editors read, so most of pstack moved across unchanged. That is a nice property of an open format, and it is worth saying out loud that the port was easy because someone else did the hard part.
 
-Upstream is MIT licensed and that license is preserved in [LICENSE](./LICENSE). The original README is kept verbatim at [README.upstream.md](./README.upstream.md) so you can compare. Fork it, improve it, make it yours.
+Upstream is MIT licensed and that license is preserved in [LICENSE](./LICENSE), with poteto's copyright first and a second line covering the port. Same terms either way. The original README is kept verbatim at [README.upstream.md](./README.upstream.md) so you can compare. Fork it, improve it, make it yours.
