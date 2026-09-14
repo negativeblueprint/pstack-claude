@@ -1,5 +1,7 @@
 # pstack for Claude Code
 
+[![verify](https://github.com/negativeblueprint/pstack-claude/actions/workflows/verify.yml/badge.svg)](https://github.com/negativeblueprint/pstack-claude/actions/workflows/verify.yml)
+
 > **This is a port, not original work.** pstack was designed and written by
 > [poteto](https://github.com/poteto) and published in
 > [cursor/plugins](https://github.com/cursor/plugins/tree/main/pstack).
@@ -140,6 +142,10 @@ The index lives inline in [`skills/poteto-mode/SKILL.md`](./skills/poteto-mode/S
 ## Automations
 
 [`automations/benny/`](./automations/benny/) is a separate pack, not part of the installed plugin. It triages Slack issue reports and reproduces confirmed bugs. Upstream it ran on Cursor's hosted Automations product; here it runs as GitHub Actions workflows invoking Claude Code headlessly. Read [`automations/benny/FOR_AGENTS.md`](./automations/benny/FOR_AGENTS.md) to install it into a target repository.
+
+## Contributing
+
+[CONTRIBUTING.md](./CONTRIBUTING.md) has the rules. The short version is that design questions go upstream, porting mistakes go here, `./verify-install.sh` has to pass, and `/p-update` owns syncing with upstream rather than anyone doing it by hand.
 
 ## Credits
 
