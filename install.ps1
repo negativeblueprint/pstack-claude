@@ -1,6 +1,7 @@
 # Install pstack skills and agents into your Claude Code config.
 # Re-running converges to the same state. Set CLAUDE_HOME to install elsewhere.
-param([switch]$Force)
+# -Check reports what is missing or out of date and writes nothing.
+param([switch]$Force, [switch]$Check)
 
 $ErrorActionPreference = 'Stop'
 $repo = $PSScriptRoot
@@ -12,6 +13,35 @@ function Get-TreeHash($path) {
 		$rel = $_.FullName.Substring($path.Length).Replace('\', '/')
 		"$rel|" + (Get-FileHash $_.FullName -Algorithm SHA256).Hash
 	}) -join "`n"
+}
+
+if ($Check) {
+	$current = 0
+	$missing = @()
+	$differing = @()
+	foreach ($src in Get-ChildItem (Join-Path $repo 'skills') -Directory) {
+		$dst = Join-Path $target "skills\$($src.Name)"
+		if (-not (Test-Path $dst)) {
+			$missing += $src.Name
+		} elseif ((Get-TreeHash $src.FullName) -eq (Get-TreeHash $dst)) {
+			$current++
+		} else {
+			$differing += $src.Name
+		}
+	}
+	Write-Host "pstack in $target"
+	Write-Host "  current   $current"
+	Write-Host "  missing   $($missing.Count)"
+	foreach ($m in $missing) { Write-Host "    $m" }
+	Write-Host "  differing $($differing.Count)"
+	foreach ($d in $differing) { Write-Host "    $d" }
+	Write-Host ""
+	if ($missing.Count -eq 0 -and $differing.Count -eq 0) {
+		Write-Host "up to date"
+		exit 0
+	}
+	Write-Host "Run .\install.ps1 to add what is missing, or .\install.ps1 -Force to replace what differs."
+	exit 1
 }
 
 $installed = 0
