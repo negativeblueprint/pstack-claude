@@ -48,5 +48,15 @@ echo "forced recovery"
 check "user content replaced" "$(grep -c "user's own skill" "$sandbox/skills/how/SKILL.md" || true)" "0"
 check "still complete" "$(find "$sandbox/skills" -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')" "$expected_skills"
 
+echo "documented counts"
+for doc in README.md PORTING.md; do
+	for claimed in $(grep -oE '[0-9]+ skills' "$repo/$doc" | grep -oE '^[0-9]+' | sort -u); do
+		check "$doc skill count" "$claimed" "$expected_skills"
+	done
+	for claimed in $(grep -oE '[0-9]+ agents' "$repo/$doc" | grep -oE '^[0-9]+' | sort -u); do
+		check "$doc agent count" "$claimed" "$expected_agents"
+	done
+done
+
 echo
 [ "$fail" -eq 0 ] && echo "all checks passed" || { echo "checks failed"; exit 1; }

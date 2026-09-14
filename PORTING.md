@@ -92,4 +92,6 @@ Two hazards worth naming, because a hosted product handled them and a workflow d
 
 ## Not verified
 
-The skills are ported and internally consistent, but they have not been run end to end against a real task. The TypeScript under `skills/poteto-mode/scripts/` (`orch`, `watch-pr`) was restored from upstream and edited minimally; its test suites were not executed here, and running them needs `bun`.
+The skills are ported and internally consistent, but they have not been run end to end against a real task.
+
+The TypeScript under `skills/poteto-mode/scripts/` (`orch`, `watch-pr`) was restored from upstream and edited minimally. Its suites do run clean here. `bun install && bun test` from `skills/poteto-mode/scripts/` gives 52 passing tests and 206 assertions across four files, on bun 1.3.11.
