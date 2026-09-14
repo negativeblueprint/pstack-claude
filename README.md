@@ -2,6 +2,8 @@
 
 [![verify](https://github.com/negativeblueprint/pstack-claude/actions/workflows/verify.yml/badge.svg)](https://github.com/negativeblueprint/pstack-claude/actions/workflows/verify.yml)
 
+<img src="./docs/meowl.svg" alt="" width="96" align="right">
+
 > **This is a port, not original work.** pstack was designed and written by
 > [poteto](https://github.com/poteto) and published in
 > [cursor/plugins](https://github.com/cursor/plugins/tree/main/pstack).
@@ -30,7 +32,7 @@ git clone https://github.com/negativeblueprint/pstack-claude.git && cd pstack-cl
 git clone https://github.com/negativeblueprint/pstack-claude.git; cd pstack-claude; .\install.ps1
 ```
 
-This copies 47 skills into `~/.claude/skills/` and 2 agents into `~/.claude/agents/`. **Restart Claude Code** afterward, since skills are discovered at session start.
+This copies 48 skills into `~/.claude/skills/` and 2 agents into `~/.claude/agents/`. **Restart Claude Code** afterward, since skills are discovered at session start.
 
 The installer is safe to re-run. It compares content, so a second run reports everything already current and changes nothing. If you already have a skill with one of our names (`how`, `why`, `teach`, `swarm` and `bro` are the plausible collisions), it refuses rather than overwriting, and tells you which ones. Pass `--force` (bash) or `-Force` (PowerShell) once you've backed those up.
 
@@ -52,6 +54,18 @@ runs the installer for you when a session opens on this repo, so the skills and
 agents are there without a manual step. It also installs `shellcheck`, which is
 what lints the shell in here. It does nothing outside a remote session, so your
 local clone is still yours to install by hand.
+
+### Just the small version
+
+`/meowl-mode` is pstack reduced to the parts that change an answer. One file, no playbooks, no principle leaves, nothing else to install.
+
+```bash
+cp -r skills/meowl-mode ~/.claude/skills/
+```
+
+That is the whole install. It has no links into the rest of the tree, so it works alone. `SKILL.md` ends with a table of what it gives up and which skill has that instead.
+
+<img src="./docs/images/meowl.jpg" alt="The meowl" width="220">
 
 ### Installing as a plugin instead
 
@@ -97,7 +111,7 @@ Twenty-two playbooks ship with it, covering investigation, bug fixes, perf, hill
 
 ## Skills
 
-47 skills. `/poteto-mode` runs most of them for you. Reach for one directly when you want just that.
+48 skills. `/poteto-mode` runs most of them for you. Reach for one directly when you want just that.
 
 | skill | use it when |
 |---|---|
@@ -123,6 +137,7 @@ Twenty-two playbooks ship with it, covering investigation, bug fixes, perf, hill
 | `/automate-me` | you want your own working style mined out of your history into a personal mode skill. |
 | `/setup-pstack` | you want to change which model fills which role, or cap the budget they run under. |
 | `/p-update` | you want to pull upstream pstack changes into this fork and reinstall. |
+| `/meowl-mode` | you want the discipline without the machinery. One file, installs on its own. |
 | `/bro` | the last message was jargon. say it like a human. |
 
 Plus `/typescript-best-practices`, and twenty-two `principle-*` skills that the mode's principles index navigates into.
@@ -148,6 +163,9 @@ The index lives inline in [`skills/poteto-mode/SKILL.md`](./skills/poteto-mode/S
 [CONTRIBUTING.md](./CONTRIBUTING.md) has the rules. The short version is that design questions go upstream, porting mistakes go here, `./verify-install.sh` has to pass, and `/p-update` owns syncing with upstream rather than anyone doing it by hand.
 
 ## Credits
+
+The meowl photograph in `docs/images/` is an internet meme of unknown authorship, composited from photographs that are not ours. It is decoration, it is **not** covered by this repository's MIT licence, and if you hold rights to it and want it removed, open an issue and it goes the same day. The line drawing at the top is original to this repository and is covered by the licence.
+
 
 pstack is by [poteto](https://github.com/poteto). The skills, the playbooks, the principles, the twenty-two-playbook router, the whole idea of encoding engineering judgment as leaf skills an agent navigates into, all of it is her design. Read the [original](https://github.com/cursor/plugins/tree/main/pstack) first if you want the source of the ideas.
 

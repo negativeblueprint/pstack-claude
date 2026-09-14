@@ -4,7 +4,7 @@ What changed, why, and what does not survive the move. Read this before trusting
 
 ## Why the port is mostly mechanical
 
-Cursor adopted Anthropic's `SKILL.md` format. Directory layout, frontmatter, and progressive disclosure through `references/` and `playbooks/` are the same in both. The 47 skills, 22 playbooks, and 22 principles are content, and content ported verbatim.
+Cursor adopted Anthropic's `SKILL.md` format. Directory layout, frontmatter, and progressive disclosure through `references/` and `playbooks/` are the same in both. The 48 skills, 22 playbooks, and 22 principles are content, and content ported verbatim.
 
 What did not port verbatim is everything that names a tool, a model, or a configuration path.
 
