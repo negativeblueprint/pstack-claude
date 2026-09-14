@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Proves install.sh: fresh install, idempotent re-run, collision refusal, forced recovery.
+# Then gates the tree itself: skill manifest, relative links, and documented counts.
 # Installs into a temp directory. Never touches your real ~/.claude.
 set -euo pipefail
 
@@ -10,6 +11,8 @@ export CLAUDE_HOME="$sandbox"
 
 expected_skills=$(find "$repo/skills" -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')
 expected_agents=$(find "$repo/agents" -name '*.md' | wc -l | tr -d ' ')
+expected_playbooks=$(find "$repo/skills/poteto-mode/playbooks" -name '*.md' | wc -l | tr -d ' ')
+expected_principles=$(find "$repo/skills" -mindepth 1 -maxdepth 1 -type d -name 'principle-*' | wc -l | tr -d ' ')
 fail=0
 
 check() {
@@ -19,6 +22,20 @@ check() {
 		echo "  FAIL  $1: expected $3, got $2"
 		fail=1
 	fi
+}
+
+link_targets() {
+	grep -oE '\]\([^) ]+\)|src="[^"]+"' "$1" | sed -E 's/^\]\(//; s/\)$//; s/^src="//; s/"$//' | sort -u
+}
+
+resolves() {
+	# No slash and no dot means a template placeholder like (url), not a path.
+	case "$2" in
+		"" | http* | mailto:* | '#'*) return 0 ;;
+		*/* | *.*) ;;
+		*) return 0 ;;
+	esac
+	[ -e "$1/${2%%#*}" ]
 }
 
 echo "fresh install"
@@ -67,15 +84,57 @@ else
 	fail=1
 fi
 
+echo "relative links"
+link_bad=0
+while IFS= read -r doc; do
+	dir="$(dirname "$doc")"
+	rel="${doc#"$repo"/}"
+	while IFS= read -r target; do
+		resolves "$dir" "$target" ||
+			{ echo "  FAIL  $rel points at missing $target"; link_bad=1; }
+	done < <(link_targets "$doc")
+done < <(find "$repo" -name '*.md' -not -path '*/.git/*' -not -name 'README.upstream.md')
+if [ "$link_bad" -eq 0 ]; then
+	echo "  pass  every relative link and image resolves"
+else
+	fail=1
+fi
+
+echo "meowl-mode stands alone"
+solo="$sandbox/standalone"
+mkdir -p "$solo"
+cp -r "$repo/skills/meowl-mode" "$solo/"
+solo_bad=0
+while IFS= read -r target; do
+	resolves "$solo/meowl-mode" "$target" ||
+		{ echo "  FAIL  meowl-mode reaches outside itself for $target"; solo_bad=1; }
+done < <(link_targets "$solo/meowl-mode/SKILL.md")
+if [ "$solo_bad" -eq 0 ]; then
+	echo "  pass  copied alone into an empty tree, nothing dangles"
+else
+	fail=1
+fi
+
 echo "documented counts"
-for doc in README.md PORTING.md; do
-	for claimed in $(grep -oE '[0-9]+ skills' "$repo/$doc" | grep -oE '^[0-9]+' | sort -u); do
-		check "$doc skill count" "$claimed" "$expected_skills"
+counts_bad=0
+while IFS= read -r doc; do
+	rel="${doc#"$repo"/}"
+	for pair in "skills:$expected_skills" "agents:$expected_agents" \
+		"playbooks:$expected_playbooks" "principles:$expected_principles" \
+		"principle leaves:$expected_principles"; do
+		noun="${pair%:*}"
+		expected="${pair##*:}"
+		for claimed in $(grep -oE "[0-9]+ $noun" "$doc" | grep -oE '^[0-9]+' | sort -u); do
+			[ "$claimed" = "$expected" ] ||
+				{ echo "  FAIL  $rel claims $claimed $noun, actual $expected"; counts_bad=1; }
+		done
 	done
-	for claimed in $(grep -oE '[0-9]+ agents' "$repo/$doc" | grep -oE '^[0-9]+' | sort -u); do
-		check "$doc agent count" "$claimed" "$expected_agents"
-	done
-done
+done < <(find "$repo" -name '*.md' -not -path '*/.git/*' -not -name 'README.upstream.md')
+if [ "$counts_bad" -eq 0 ]; then
+	echo "  pass  every documented count matches the tree"
+else
+	fail=1
+fi
 
 echo
 [ "$fail" -eq 0 ] && echo "all checks passed" || { echo "checks failed"; exit 1; }
