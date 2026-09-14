@@ -24,6 +24,8 @@ If `SYNC.md` is absent, treat every upstream path as unreviewed and say so befor
 
 `WebFetch` `https://github.com/cursor/plugins/commits/main/pstack` and take every commit newer than `upstream_sha`. The GitHub REST API is not reachable for this repository from a session that has not attached it, so use the commits page rather than `api.github.com`.
 
+Write down the newest SHA as `target_sha`. Every fetch from here on names that SHA. Upstream can land a commit while this run is in progress, and a run that reads `main` would leave `SYNC.md` claiming a SHA the ported files do not match.
+
 Stop here and report if nothing is newer. An up-to-date fork needs no diff.
 
 ### 3. Diff the skill trees
@@ -34,7 +36,7 @@ Local-only is not drift. This fork has skills upstream does not, `p-update` amon
 
 ### 4. Fetch the sources byte-exact
 
-`curl https://raw.githubusercontent.com/cursor/plugins/main/pstack/<path>` for each file you intend to port. Raw fetches give exact bytes. Do not port from a `WebFetch` summary, which paraphrases and will silently reword instructions.
+`curl https://raw.githubusercontent.com/cursor/plugins/<target_sha>/pstack/<path>` for each file you intend to port. Raw fetches give exact bytes, and the SHA pins them to the tree you decided to reconcile against. Do not port from a `WebFetch` summary, which paraphrases and will silently reword instructions.
 
 ### 5. Classify before editing
 
@@ -69,7 +71,7 @@ cd skills/poteto-mode/scripts && bun install && bun test
 
 ### 8. Record the state
 
-Rewrite `SYNC.md` with the new `upstream_sha`, today's date, and every decision from step 5. Overwrite the whole file so re-runs converge on the same state.
+Rewrite `SYNC.md` with `target_sha` as the new `upstream_sha`, today's date, and every decision from step 5. Overwrite the whole file so re-runs converge on the same state.
 
 ### 9. Install for the user
 
