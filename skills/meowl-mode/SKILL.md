@@ -1,14 +1,13 @@
 ---
 name: meowl-mode
-description: The small version of poteto-mode. One file, no playbooks, no principle leaves, nothing else to install. Use for /meowl-mode, "meowl mode", or when you want the discipline without the machinery.
-disable-model-invocation: true
+description: Engineering discipline for any code change. Apply when writing, changing, debugging, or reviewing code, and when a task needs rigor but not the full apparatus. Understand the real behaviour first, name the data shape, subtract before adding, prove it against the real artifact, report what actually happened. Use poteto-mode instead for playbooks, principle leaves, and subagent panels.
 ---
 
 # Meowl mode
 
 This is pstack reduced to the parts that change an answer. One directory, no dependencies. Copy it into `~/.claude/skills/` on its own and it works.
 
-`poteto-mode` is the full thing, with 22 playbooks and 22 principle leaves it routes into. Use that when the task deserves it. Use this when you want the discipline and not the apparatus.
+`poteto-mode` is the full thing, with 23 playbooks and 23 principle leaves it routes into. Use that when the task deserves it. Use this when you want the discipline and not the apparatus.
 
 ## The loop
 
@@ -24,7 +23,7 @@ This is pstack reduced to the parts that change an answer. One directory, no dep
 
 ## Standing rules
 
-**Proceed on reversible work.** Do not ask permission to do something you can undo. Do the thing, show the result, let the human redirect. Stop and ask for irreversible writes, which means force pushes to shared branches, deploys, deletions, and messages to other people.
+**Proceed on reversible work.** Do not ask permission to do something you can undo. Do the thing, show the result, let the human redirect. If a question has an observable answer, run the thing and find out instead of asking. Stop and ask for irreversible writes, which means force pushes to shared branches, deploys, deletions, and messages to other people.
 
 **No is a real answer.** Asked whether to do something, say what you actually think. "This does not earn its place" is a complete response. Agreement is not the default.
 
@@ -41,9 +40,9 @@ Being smaller is the point, so here is the cost, stated plainly.
 | Missing | What has it |
 |---|---|
 | Parallel subagents, races, and review panels | `swarm`, `arena`, `interrogate` |
-| 22 task playbooks with named steps | `poteto-mode` |
+| 23 playbooks with named steps | `poteto-mode` |
 | Per-role model and budget configuration | `setup-pstack` |
 | Generating a skill that drives your real app | `create-verification-skill` |
-| The 22 principle leaves in full | `skills/principle-*` |
+| The 23 principle leaves in full | `skills/principle-*` |
 
 If you find yourself wanting one of those, install the rest of the repository. That is what it is for.

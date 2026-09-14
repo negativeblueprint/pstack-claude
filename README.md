@@ -2,8 +2,6 @@
 
 [![verify](https://github.com/negativeblueprint/pstack-claude/actions/workflows/verify.yml/badge.svg)](https://github.com/negativeblueprint/pstack-claude/actions/workflows/verify.yml)
 
-<img src="./docs/meowl.svg" alt="" width="96" align="right">
-
 > **This is a port, not original work.** pstack was designed and written by
 > [poteto](https://github.com/poteto) and published in
 > [cursor/plugins](https://github.com/cursor/plugins/tree/main/pstack).
@@ -36,6 +34,8 @@ This copies 48 skills into `~/.claude/skills/` and 2 agents into `~/.claude/agen
 
 The installer is safe to re-run. It compares content, so a second run reports everything already current and changes nothing. If you already have a skill with one of our names (`how`, `why`, `teach`, `swarm` and `bro` are the plausible collisions), it refuses rather than overwriting, and tells you which ones. Pass `--force` (bash) or `-Force` (PowerShell) once you've backed those up.
 
+Skills are copied into `~/.claude`, not read from your clone, so a `git pull` alone leaves you on the old copy. `./install.sh --check` or `.\install.ps1 -Check` reports what is missing or out of date and writes nothing. It exits non-zero when you are behind, so it also works in a script.
+
 To install somewhere else, set `CLAUDE_HOME`.
 
 To check the installer on your own machine before trusting it with your config, `./verify-install.sh` runs the whole thing against a temp directory and never touches `~/.claude`.
@@ -63,7 +63,9 @@ local clone is still yours to install by hand.
 cp -r skills/meowl-mode ~/.claude/skills/
 ```
 
-That is the whole install. It has no links into the rest of the tree, so it works alone. `SKILL.md` ends with a table of what it gives up and which skill has that instead.
+That is the whole install. It has no links into the rest of the tree, so it works alone, and `verify-install.sh` proves that by installing it into an empty directory on its own. `SKILL.md` ends with a table of what it gives up and which skill has that instead.
+
+It is the one skill here without `disable-model-invocation`, so it applies itself on code work instead of waiting to be typed. That is deliberate. It is the cheapest useful default. `/poteto-mode`'s router alone is about six times its size, before a playbook or a single principle leaf is read. Type `/meowl-mode` to force it, or `/poteto-mode` when the task earns the full apparatus.
 
 <img src="./docs/images/meowl.jpg" alt="The meowl" width="220">
 
@@ -105,7 +107,7 @@ first, then fix and verify.
 
 When invoked it opens a todo list whose first item is reading the inline principles index, copies the matched playbook's steps in verbatim, routes to the other skills as steps fire, and writes an unslopped reply framed for both the consumer and the maintainer.
 
-Twenty-two playbooks ship with it, covering investigation, bug fixes, perf, hillclimbing, runtime and trace forensics, features, refactors, prototypes, visual parity, skill authoring, evals, babysitting a PR to green, shipping a stack, autonomous runs, orchestration, autopilot, session pickup, pausing safely, multi-phase plans, and worktree cleanup. They live in [`skills/poteto-mode/playbooks/`](./skills/poteto-mode/playbooks/).
+23 playbooks ship with it, covering investigation, bug fixes, perf, hillclimbing, runtime and trace forensics, features, refactors, prototypes, visual parity, skill authoring, evals, babysitting a PR to green, shipping a stack, autonomous runs, orchestration, autopilot, session pickup, pausing safely, multi-phase plans, and worktree cleanup. They live in [`skills/poteto-mode/playbooks/`](./skills/poteto-mode/playbooks/).
 
 `/poteto-mode` pairs well with Claude Code's built-in `/loop`, which is how you get long unattended runs without dropping rigor.
 
@@ -140,7 +142,7 @@ Twenty-two playbooks ship with it, covering investigation, bug fixes, perf, hill
 | `/meowl-mode` | you want the discipline without the machinery. One file, installs on its own. |
 | `/bro` | the last message was jargon. say it like a human. |
 
-Plus `/typescript-best-practices`, and twenty-two `principle-*` skills that the mode's principles index navigates into.
+Plus `/typescript-best-practices`, and 23 principle leaves that the mode's principles index navigates into.
 
 ## Principles
 
@@ -164,10 +166,10 @@ The index lives inline in [`skills/poteto-mode/SKILL.md`](./skills/poteto-mode/S
 
 ## Credits
 
-The meowl photograph in `docs/images/` is an internet meme of unknown authorship, composited from photographs that are not ours. It is decoration, it is **not** covered by this repository's MIT licence, and if you hold rights to it and want it removed, open an issue and it goes the same day. The line drawing at the top is original to this repository and is covered by the licence.
+The meowl photograph in `docs/images/` is an internet meme of unknown authorship, composited from photographs that are not ours. It is decoration, it is **not** covered by this repository's MIT licence, and if you hold rights to it and want it removed, open an issue and it goes the same day.
 
 
-pstack is by [poteto](https://github.com/poteto). The skills, the playbooks, the principles, the twenty-two-playbook router, the whole idea of encoding engineering judgment as leaf skills an agent navigates into, all of it is her design. Read the [original](https://github.com/cursor/plugins/tree/main/pstack) first if you want the source of the ideas.
+pstack is by [poteto](https://github.com/poteto). The skills, the playbooks, the principles, the playbook router, the whole idea of encoding engineering judgment as leaf skills an agent navigates into, all of it is her design. Read the [original](https://github.com/cursor/plugins/tree/main/pstack) first if you want the source of the ideas.
 
 This port exists because the ideas are good and the format is portable. Anthropic's `SKILL.md` spec is what both editors read, so most of pstack moved across unchanged. That is a nice property of an open format, and it is worth saying out loud that the port was easy because someone else did the hard part.
 

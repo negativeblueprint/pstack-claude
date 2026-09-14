@@ -4,7 +4,7 @@ What changed, why, and what does not survive the move. Read this before trusting
 
 ## Why the port is mostly mechanical
 
-Cursor adopted Anthropic's `SKILL.md` format. Directory layout, frontmatter, and progressive disclosure through `references/` and `playbooks/` are the same in both. The 48 skills, 22 playbooks, and 22 principles are content, and content ported verbatim.
+Cursor adopted Anthropic's `SKILL.md` format. Directory layout, frontmatter, and progressive disclosure through `references/` and `playbooks/` are the same in both. The 48 skills, 23 playbooks, and 23 principles are content, and content ported verbatim.
 
 What did not port verbatim is everything that names a tool, a model, or a configuration path.
 
@@ -78,7 +78,7 @@ The behavior is preserved in prose: a "Staying in the mode" section at the top o
 
 **`make-bot-ui`.** Built entirely on Cursor primitives with no Claude Code analogue: webhook Routines, the `update_state` tool, `SendToUser` secret-request cards, and `api2.cursor.sh` webhook URLs. Nothing to translate it into. Removed rather than shipped as a skill referencing tools that do not exist.
 
-That is the only skill dropped. The other 44, all 22 playbooks, all 20 principles, and the guide carried over.
+That is the only skill dropped. The other 44, all 23 playbooks, all 23 principles, and the guide carried over.
 
 ## Benny
 

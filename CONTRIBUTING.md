@@ -15,7 +15,7 @@ The issue template asks you this, so answering it there is enough.
 cd skills/poteto-mode/scripts && bun install && bun test
 ```
 
-`verify-install.sh` installs into a temporary directory and never touches your real `~/.claude`. It proves a fresh install, an idempotent re-run, collision refusal, forced recovery, that every skill names itself, that every `principle-*` leaf appears in `poteto-mode`'s index, and that the counts in `README.md` and `PORTING.md` match the tree. CI runs the same script, so a green local run is a green pull request.
+`verify-install.sh` installs into a temporary directory and never touches your real `~/.claude`. It proves a fresh install, an idempotent re-run, collision refusal, forced recovery, that every skill names itself, that every `principle-*` leaf appears in `poteto-mode`'s index, that every relative link and image in the tree resolves, that `meowl-mode` still works when copied out on its own, and that every count written in any markdown file matches the tree. CI runs the same script, so a green local run is a green pull request.
 
 ## The skills are held to their own prose rules
 
@@ -28,7 +28,7 @@ The rest of `skills/unslop/SKILL.md` applies to any skill prose you write. Agent
 A new skill is a directory under `skills/` holding a `SKILL.md` with `name` and `description` frontmatter, where `name` matches the directory exactly. Three things a new skill usually also needs.
 
 - A `principle-*` leaf is invisible until it is listed in `poteto-mode`'s inline Principles index. The verifier checks this.
-- The counts in `README.md` and `PORTING.md` change. The verifier checks these too.
+- Counts change. The verifier reads every markdown file in the tree and holds each written count against reality, so write them as digits. A count spelled out in words is invisible to it.
 - The skills table in `README.md` is hand-maintained. Nothing checks it.
 
 ## Syncing with upstream
